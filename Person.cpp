@@ -1,10 +1,16 @@
 #include "Person.h"
-
-
+#include "User.h"
+#include"Menu.h"
 vector <string> PersonWord{ "编号","姓名","年龄","性别","电话","数量限制" ,"已借书数目","已借的所有书ID","组别"};
 
 //显示标题
-
+extern User* present_user;
+extern Person* present_borrower;
+extern Admin* present_admin;
+extern vector<Admin> Admins;
+extern vector<User> Users;
+extern vector<Person>Borrowers;
+extern vector<Book> Books;
 
 /// <summary>
 /// 显示标题
@@ -95,8 +101,9 @@ void person_modify(Person & person)
 //"编号","姓名","年龄","性别","电话","数量限制" ,"已借书数目","已借的所有书ID","组别"
 void Person::modify()
 {
-	size_t i = 0;
+	size_t i = 1;
 	int SNumber = 0;
+
 	cout << "选择修改相应的序号" << endl;
 
 	for (string temp : PersonWord)
@@ -109,15 +116,27 @@ void Person::modify()
 
 	}
 	cin >> SNumber;
-
+	string temp_name;
+	int temp_id;
+	User* temp_user;
 	switch (SNumber)
 	{
 	case 0:
-		cout << PersonWord[SNumber]<<":"; cin >> ID;
+
+		cout << PersonWord[SNumber]<<":"; cin >> temp_id;
+		temp_user = User::Search_ID(temp_id);
+		(*temp_user).ID = temp_id;
+		ID = temp_id;
 		break;
 	case 1:
-		cout << PersonWord[SNumber]<<":"; cin >> Name;
+
+		cout << PersonWord[SNumber]<<":"; cin >> temp_name;
+		temp_user = User::Search_ID(ID);
+		(*temp_user).Name = temp_name;
+		Name = temp_name;
+		
 		break;
+
 	case 2:
 		cout << PersonWord[SNumber] << ":"; cin >> Age;
 		break;
@@ -143,6 +162,69 @@ void Person::modify()
 
 	}
 
+}
+
+void Person::personal_modify()
+{
+	size_t i = 0;
+	int SNumber = 0;
+	size_t n = 0;
+	cout << "选择修改相应的序号" << endl;
+
+	for (string temp : PersonWord)
+	{
+		i++;
+		if (i==1)
+		{
+			
+			continue;
+		}
+		if (i == 8)
+		{
+			continue;
+		}
+		n++;
+		cout << "[" << n << "]" << ":" << temp << endl;
+
+	}
+	cin >> SNumber;
+	string temp_name;
+	User* temp_user;
+	switch (SNumber)
+	{
+	case 1:
+
+		cout << PersonWord[SNumber] << ":"; cin >> temp_name;
+		temp_user = User::Search_ID(ID);
+		(*temp_user).Name = temp_name;
+		Name = temp_name;
+
+		break;
+
+	case 2:
+		cout << PersonWord[SNumber] << ":"; cin >> Age;
+		break;
+	case 3:
+		cout << PersonWord[SNumber] << "(男“1”，女“0”)" << ":"; cin >> Gender;
+		break;
+	case 4:
+		cout << PersonWord[SNumber] << ":"; cin >> PhoneNumber;
+		break;
+	case 5:
+		cout << PersonWord[SNumber] << ":"; cin >> BookNumberLimit;
+		break;
+	case 6:
+		cout << PersonWord[SNumber] << ":"; cin >> BorrowedNumber;
+		break;
+	case 7:
+		SNumber = SNumber + 1;
+		cout << PersonWord[SNumber] << "(学生“0”，老师“1”)" << ":"; cin >> Type;
+		break;
+	default:
+		cout << "输入数字错误，请重新选择" << endl;
+		break;
+
+	}
 }
 
 
@@ -234,6 +316,32 @@ void Person::display_all_books( vector<Book> &books)
 	}
 	cout << endl;
 	cout << "--------------------------------------------------------------------------------" << endl;
+}
+
+void Person::display_all_books()
+{
+	extern vector <Book>Books;
+	cout << setw(10) << "ID" << setw(10) << "书名" << setw(25) << "借书时间" << setw(25) << "还书时间" << endl;
+	cout << "--------------------------------------------------------------------------------" << endl;
+
+	for (auto temp_bookID : BooksID)
+	{
+		for (Book &temp_book : Books)
+		{
+			if (temp_book.ID == temp_bookID)
+			{
+				cout <<setw(10)<< temp_book.ID << setw(10)
+					<< temp_book.Title << setw(10);
+				time_display(temp_book.BorrowTime);
+				cout << "  ";
+				time_display(temp_book.ReturnTime);
+				
+			}
+		}
+	}
+	cout << endl;
+	cout << "--------------------------------------------------------------------------------" << endl;
+
 }
 
 /// <summary>
@@ -357,4 +465,79 @@ bool Person::operator>(const Person& b)
 		return false;
 	}
 
+}
+
+void Person::display_header()
+{
+	cout << "--------------------------------------------------------------------------------" << endl;
+	cout << setw(10) << PersonWord[0]
+		<< setw(10) << PersonWord[1]
+		<< setw(8) << PersonWord[2]
+		<< setw(8) << PersonWord[3]
+		<< setw(15) << PersonWord[4]
+		<< setw(10) << PersonWord[5]
+		<< setw(12) << PersonWord[6]
+		<< setw(10) << PersonWord[8];
+	cout << endl;
+	cout << "--------------------------------------------------------------------------------" << endl;
+
+
+}
+
+void Person::delete_a_Borrower()
+{
+	cout << "  当前为人员信息删除模块  " << endl;
+
+	int temp_ID;
+	cout << "请输入要删除人员的ID(请确保当前人员没有借书):" << endl;
+	cin >> temp_ID;
+	for (vector<Person>::iterator iter = Borrowers.begin(); iter != Borrowers.end(); iter++)
+	{
+		//从vector中删除指定的某一个元素
+
+		if ((*iter).searchPersonID(temp_ID))
+		{
+			if ((*iter).BorrowedNumber == 0)
+			{
+				Borrowers.erase(iter);//把当前书ID删除
+				cout << "删除信息成功" << endl;
+				
+
+
+				for (vector<User>::iterator ite = Users.begin(); ite != Users.end(); iter++)
+				{
+					if ((*ite).search_ID(temp_ID))
+					{
+						Users.erase(ite);
+						cout << "删除账号成功" << endl;
+						return;
+						
+					}
+				}
+				cout << "删除账号失败" << endl;
+				break;
+
+			}
+			else
+			{
+				cout << "当前人员已借书，无法删除" << endl;
+				return;
+			}
+		}
+	}
+
+
+	cout << "未找到ID相关信息，请检查ID是否正确" << endl;
+}
+
+void Person::display_all_books_header()
+{
+	cout << "当前已借的书:" << endl;
+	cout << "--------------------------------------------------------------------------------" << endl;
+
+}
+
+void Person::add_a_Borrower()
+{
+	User_Register();
 }

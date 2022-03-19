@@ -1,15 +1,19 @@
 #include"Menu.h"
 #include<iostream>
 #include "FileProcess.h"
+
 using namespace std;
 //输入图书结构体数组，人物结构体数组，返回值使用指针
-
-
-
+extern User* present_user;
+extern Person* present_borrower;
+extern Admin* present_admin;
+extern vector<Admin> Admins;
+extern vector<User> Users;
+extern vector<Person>Borrowers;
+extern vector<Book> Books;
 
 void Login_Menu()
 {
-	extern vector<User> Users;
 	int nMainChoose;
 	bool status;
 	system("cls");
@@ -46,6 +50,10 @@ void Login_Menu()
 			break;
 		case 3:
 			status = User_Register();
+			if (status)
+			{
+				User_Main_Menu();
+			}
 			break;
 		case 0:
 			exit(0);
@@ -62,7 +70,6 @@ void Login_Menu()
 
 bool Admin_Login()
 {
-	extern vector<Admin> Admins;
 	int ID;
 	string Password;
 	system("CLS");
@@ -72,7 +79,9 @@ bool Admin_Login()
 	{
 		if(temp_user.login(ID)) 
 		{
+			
 			cout<<"登录成功！"<<endl;
+			present_admin = &temp_user;
 			return true;
 		}
 	}
@@ -80,9 +89,13 @@ bool Admin_Login()
 	return false;
 }
 
+
+/// <summary>
+/// 用户登录
+/// </summary>
+/// <returns></returns>
 bool User_Login()
 {
-	extern vector<User> Users;
 	int ID;
 	string Password;
 	system("CLS");
@@ -92,8 +105,17 @@ bool User_Login()
 	{
 		if (temp_user.login(ID))
 		{
-			cout << "登录成功！" << endl;
-			return true;
+			for (auto& temp_borrower:Borrowers)
+			{
+				if (temp_borrower.searchPersonID(ID))
+				{
+					present_borrower = &temp_borrower;
+					cout << "登录成功！" << endl;
+					return true;
+				}
+			}
+			cout << "数据错误，未找到有关账号的相关信息" << endl;
+			return false;
 		}
 	}
 	cout << "登录失败,未找到用户！" << endl;
@@ -108,10 +130,6 @@ bool User_Login()
 /// <param name="Books"></param>
 void User_Main_Menu()
 {
-
-	extern vector<Person> Borrowers;
-	extern vector<Book> Books;
-	extern vector<User> Users;
 	int nMainchoose;
 	//主菜单无限循环
 	while (1)
@@ -136,9 +154,9 @@ void User_Main_Menu()
 		extern string file_name_persons;
 		cout << "\n\t图书数据已从" << file_name_books << "导入,图书馆中目前共有" << the_Number_of_Books << "本书 \n\n";
 		cout << "\n\t读者数据已从" << file_name_persons << "导入,图书馆中目前共有" << the_Number_of_Persons << "位读者 \n\n";
-
+		cout << "\t\t欢迎" << *present_user <<"使用本程序" << endl;
 		//请用户输入选择的数字
-		printf("\t\t   请选择功能序号(0~5):");
+		printf("\t\t   请选择功能序号:");
 		//用户根据界面提示输入数字
 		cin >> nMainchoose;
 		//根据用户输入的数字看如何行动
@@ -157,7 +175,7 @@ void User_Main_Menu()
 
 			//转到二级菜单：个人信息菜单
 		case 3:
-			personInfo_Menu();
+			personal_Center_Menu();
 			break;
 
 		case 4:
@@ -175,29 +193,142 @@ void User_Main_Menu()
 		}//switch结束
 	}//while(1)函数结束
 }
-void personInfo_Menu()
+
+
+/// <summary>
+/// 2.1.3个人中心
+/// </summary>
+void personal_Center_Menu()
 {
-	User::save_file();
-	system("pause");
+	int nMainchoose;
+	//主菜单无限循环
+	while (1)
+	{
+		system("CLS"); //系统屏幕清空
+		//输出菜单主界面
+		printf("\t\t --------------------------------------\n");
+		printf("\t\t             个人信息查询            \n");
+		printf("\t\t                                     \n");
+		printf("\t\t      1.图书借阅信息                \n");
+		printf("\t\t                                     \n");
+		printf("\t\t                                     \n");
+		printf("\t\t      2.个人信息查询                \n");
+		printf("\t\t                                    \n");
+		cout << endl;
+		cout <<"\t\t      3.个人信息修改                    " << endl;
+		printf("\t\t                                     \n");
+		cout << endl;
+		printf("\t\t      0.返回                        \n");
+		printf("\t\t --------------------------------------\n");
+		//请用户输入选择的数字
+		printf("\t\t   请选择功能序号:");
+		//用户根据界面提示输入数字
+		cin >> nMainchoose;
+		//根据用户输入的数字看如何行动
+		switch (nMainchoose)
+		{
+			//转到二级菜单：借阅归还图书菜单选项显示
+		case 1:
+			personal_borrowBook_Info();
+			system("pause");
+			break;
+
+			//转到二级菜单：图书信息查询菜单选项显示
+		case 2:
+			personal_Informaton();
+			system("pause");
+			break;
+		case 3:
+			personal_Info_modify();
+			system("pause");
+			break;
+
+		case 0:
+			//用户退出
+			cout << "\n\n\t\t感谢使用我们的软件，欢迎下次再来！" << endl;
+			return;
+			break;
+			//用户选择有误
+		default:
+			printf("选择有误，请重选！\n");
+		}//switch结束
+	}//while(1)函数结束
 }
-//主菜单函数结束
+
+void personal_borrowBook_Info()
+{
+	cout << "\t\t个人借阅信息查询" << endl;
+	(*present_borrower).display_all_books_header();
+	(*present_borrower).display_all_books();
+}
+
+void personal_Informaton()
+{
+
+	cout << "\t个人信息查询" << endl;
+
+	(*present_borrower).display_header();
+	(*present_borrower).display();
+}
 
 
 
 
 
+
+
+void personal_Info_modify()
+{
+	cout << "\t\t个人信息修改" << endl;
+	cout << "\t1.修改密码" << endl
+		<< "\t2.修改个人信息" << endl;
+	cout << "\t\t请输入序号:";
+	int choice;
+	cin >> choice;
+	switch (choice)
+	{
+	case 1:
+		//修改密码
+		present_user->modify();
+		break;
+	case 2:
+		present_borrower->personal_modify();
+		break;
+	default:
+		break;
+	}
+}
 
 bool User_Register()
 {
+	Init_User user_list;
+	InitPersonStruct person_list;
+
 	extern vector<User> Users;
-	return false;
+	extern vector<Person> Borrowers;
+	extern User* present_user;
+	cout << "\t\t当前为注册模块" << endl;
+	cout << "请输入ID" << endl;
+	cin >> user_list.id;
+	cout << "请输入密码" << endl;
+	cin >> user_list.password;
+	cout << "请输入姓名" << endl;
+	cin >> user_list.name;
+	Users.push_back(user_list);
+	addPersonInfo(user_list.id, user_list.name);
+	present_user = &(Users.back());
+	present_borrower = &(Borrowers.back());
+	//保存用户文件以及相关的数据文件
+	User::save_file();
+	person_file_save(Borrowers);
+	return true;
 }
 
 
 
 
 /// <summary>
-/// 主菜单界面
+/// 管理员主菜单界面
 /// </summary>
 /// <param name="Borrowers"></param>
 /// <param name="Books"></param>
@@ -207,6 +338,12 @@ void Main_Menu( )
 	extern vector<Person> Borrowers;
 	extern vector<Book> Books;
 	extern vector<User> Users;
+	extern size_t the_Number_of_Books;
+	extern size_t the_Number_of_Persons;
+	extern string file_name_books;
+	extern string file_name_persons;
+	extern Admin* present_admin;
+
 	int nMainchoose;
 	//主菜单无限循环
 	while (1)
@@ -226,15 +363,13 @@ void Main_Menu( )
 		printf("\t\t --------------------------------------\n");
 		//根据宏定义的文件名和书籍数目显示
 		//printf("\n\t图书馆中%s中目前共有%d本书 \n\n");//, //FILENAME, *npStudentNum);
-		extern size_t the_Number_of_Books;
-		extern size_t the_Number_of_Persons;
-		extern string file_name_books;
-		extern string file_name_persons;
+
 		cout << "\n\t图书数据已从" << file_name_books << "导入,图书馆中目前共有" << the_Number_of_Books << "本书 \n\n";
 		cout << "\n\t读者数据已从" << file_name_persons << "导入,图书馆中目前共有" << the_Number_of_Persons << "位读者 \n\n";
-
+		cout << "\n\t欢迎" << *present_admin << "使用本系统" << endl;
 		//请用户输入选择的数字
-		printf("\t\t   请选择功能序号(0~5):");
+		printf("\t\t   请选择功能序号:");
+
 		//用户根据界面提示输入数字
 		//scanf("%d", &nMainchoose);
 		cin >> nMainchoose;

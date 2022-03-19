@@ -1,7 +1,15 @@
 #include "Book.h"
+#include "Admin.h"
 
 vector<string> StatusWord{ "未借","已借","遗失未缴费","遗失已缴费" ,"遗失"};//状态，图书的状态，未借0，已借1，遗失未缴费2，遗失已缴费3，遗失4
 vector<string>BookWord{ "编号","标题","作者","出版社","定价","状态","是否可借","借阅时间","归还时间","借书人","借书人ID"};//字段，方便打印
+extern User* present_user;
+extern Person* present_borrower;
+extern Admin* present_admin;
+extern vector<Admin> Admins;
+extern vector<User> Users;
+extern vector<Person>Borrowers;
+extern vector<Book> Books;
 
 void display_book_title() {
 	cout << "----------------------------------------------------------------------------------------------------------------------------------------------------------------" << endl;
@@ -456,9 +464,6 @@ void Book::read(ifstream& book_file)
 		//	p = strtok_s(NULL, d,&ptr);
 		//}
 
-
-
-
 	}
 }
 
@@ -530,6 +535,24 @@ void Book::operator<<(Book& b)
 		*this = b;
 		b = temp_book;
 	}
+}
+
+Book* Book::Search_Book_ID(int id)
+{
+	for (auto& temp_book : Books)
+	{
+		if (temp_book.searchBookID(id))
+		{
+			return &temp_book;
+		}
+	}
+	cout << "未找到书籍" << endl;
+	return NULL;
+}
+
+bool Book::Borrow_Book(int id)
+{
+	return false;
 }
 
 

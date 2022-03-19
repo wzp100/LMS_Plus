@@ -18,13 +18,26 @@ void Login_Menu();
 
 // 1.管理员登录函数
 bool Admin_Login();
+
+
+
+
+
 // 2.用户登录函数
 bool User_Login();
 // 2.1 用户主界面
 void User_Main_Menu();
 
 // 2.1.3 个人中心
-void personInfo_Menu();
+void personal_Center_Menu();
+//2.1.3.1 图书借阅信息
+void personal_borrowBook_Info();
+
+//2.1.3.2 个人信息查询
+void personal_Informaton();
+
+//2.1.3.3 个人信息修改
+void personal_Info_modify();
 // 3.用户注册函数
 bool User_Register();
 

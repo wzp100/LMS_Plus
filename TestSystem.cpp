@@ -1,4 +1,5 @@
 #include"TestSystem.h"
+using namespace std;
 void test_system()
 {
     cout << "欢迎使用本系统";
@@ -207,4 +208,18 @@ void test_system()
     //
 
 
+}
+
+void mov_data_from_person_to_user()
+{
+    extern vector<Person> Borrowers;
+    extern vector<User> Users;
+    Init_User User_Init;
+    for (Person &temp_person : Borrowers)
+    {
+        User_Init.id = temp_person.ID;
+        User_Init.name = temp_person.Name;
+        User_Init.password = "123456";
+        Users.push_back(User_Init);
+    }
 }

@@ -1,5 +1,6 @@
 
 #include "bookInformationQqueryMenu.h"
+#include "borrowingInformationQqueryMenu.h"
 
 /// <summary>
 /// 4.图书信息查询二级菜单
@@ -24,6 +25,8 @@ void bookInformationQquery_Menu(vector<Person>& Borrowers, vector<Book>& Books)
 		printf("\t\t|        3.按作者查询            |\n");
 		printf("\t\t|                                |\n");
 		printf("\t\t|        4.按出版社查询          |\n");
+		printf("\t\t|                                |\n");
+		printf("\t\t|        5.查看所有的图书        |\n");
 		printf("\t\t|                                |\n");
 		printf("\t\t|        0.返回上级菜单          |\n");
 		printf("\t\t|                                |\n");
@@ -52,6 +55,11 @@ void bookInformationQquery_Menu(vector<Person>& Borrowers, vector<Book>& Books)
 		case 4:
 			//4.4 按出版社查询
 			pressSearchBook(Books);
+			system("PAUSE");
+			break;
+		case 5:
+			//3.1 所有图书借阅情况
+			allBooksInformation(Books);
 			system("PAUSE");
 			break;
 		case 0:
@@ -189,3 +197,5 @@ void pressSearchBook(vector<Book>& Books)
 		cout << "  未搜索到结果" << endl;
 	}
 }
+
+

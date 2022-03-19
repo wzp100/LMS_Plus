@@ -2,9 +2,12 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include<ctime>
+#include<chrono>
 #include <vector>
 #include <chrono>
 #include <fstream>
+
 
 #include "Book.h"
 
@@ -12,6 +15,8 @@ const int Man =1;
 const int  Woman =0;
 const int StudentType = 0;
 const int TeacherType =1;
+
+
 
 using namespace std;
 //TODO:完善变量
@@ -54,6 +59,7 @@ public:
 
 	//通过输入相应的序号修改相应的变量
 	void modify();
+	void personal_modify();
 	
 	//借书函数,输入书的ID，将其纳入存储ID中
 	void borrow(Book &  borrowing_book);
@@ -63,6 +69,7 @@ public:
 	
 	//TODO:通过所有的书ID找到书名，并显示
 	void display_all_books( vector<Book>& books);
+	void display_all_books();
 	
 	//搜索人员ID函数
 	bool searchPersonID(int personID);
@@ -81,8 +88,10 @@ public:
 	bool operator> (const Person& b);
 
 
-
-
+	static void display_header();
+	static void display_all_books_header();
+	static void add_a_Borrower();
+	static void delete_a_Borrower();
 	//友元
 	friend Book;
 
@@ -103,6 +112,10 @@ public:
 	friend void deletePersonInfo(vector<Person>& Borrowers);
 	//人员信息修改函数
 	friend void modifyPerson(vector<Person>& Borrowers);
+	//测试移动数据函数
+	friend void mov_data_from_person_to_user();
+	//输出时间
+
 private:
 	int ID;//0编号
 	string Name;//1姓名
@@ -118,4 +131,3 @@ private:
 
 
 void display_person_title();// 展示person表格的表头
-

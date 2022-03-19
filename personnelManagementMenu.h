@@ -8,6 +8,7 @@
 void personnelManagement_Menu(vector<Person>& Borrowers, vector<Book>& Books);
 //5.1 增加人员信息
 void addPersonInfo(vector<Person>& Borrowers);
+void addPersonInfo(int id,string name);
 //5.2 删除人员信息
 void deletePersonInfo(vector<Person>& Borrowers);
 //5.3 修改人员信息

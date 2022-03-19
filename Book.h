@@ -7,7 +7,6 @@
 #include<chrono>
 #include<fstream>
 #include<sstream>
-
 #include"Person.h"
 #include"TimeProcess.h"
 using namespace std;
@@ -89,6 +88,11 @@ public:
 	friend void authorSearchBook(vector<Book>& Books);
 
 	friend void pressSearchBook(vector<Book>& Books);
+	
+	static Book* Search_Book_ID(int id);
+	//½èÊéº¯Êý
+	static bool Borrow_Book(int id);
+	
 
 protected:
 	int ID;//0±àºÅ

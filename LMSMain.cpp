@@ -19,12 +19,18 @@ size_t the_Number_of_Books = 0;
 size_t the_Number_of_Persons = 0;
 string file_name_books = "Book.txt";
 string file_name_persons = "Person.txt";
+string file_name_users = "User.txt";
+string file_name_admins = "Admin.txt";
+int  User::counter = 0;
+
 vector<Person> Borrowers;
 vector<Book> Books;
 vector<User> Users;
 vector<Admin> Admins;
-User* temp_user;
-Admin* temp_admin;
+
+User* present_user = NULL;
+Admin* present_admin =NULL;
+Person* present_borrower = NULL;
 int main()
 {
 
@@ -36,34 +42,16 @@ int main()
     the_Number_of_Books = Books.size();
     the_Number_of_Persons = Borrowers.size();
     cout << "读取完毕！" << endl;
-
-    Init_User user_list;
-    Init_Admin admin_list;
-    user_list.name = "用户1";
-    user_list.password = "123456";
-    user_list.id = 1;
-    admin_list.name = "管理员1";
-    admin_list.password = "123456";
-    admin_list.id = 1;
-    Users.push_back(user_list);
-    Admins.push_back(admin_list);
-    user_list.name = "用户2";
-    user_list.password = "123456";
-    admin_list.name = "管理员2";
-    user_list.id = 2;
-    Users.push_back(user_list);
-    Admins.push_back(admin_list);
-    //登录界面
-    Login_Menu();
-
-
+    User::load_file();
+    Admin::load_file();
     //建立关系
     for (Book& temp_book : Books)
     {
         temp_book.BulidRelationship(Borrowers);
     }
-    Main_Menu();
-    
+    //登录界面
+    Login_Menu();
+    //Main_Menu();
 
 }
 

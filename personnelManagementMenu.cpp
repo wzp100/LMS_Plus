@@ -37,9 +37,8 @@ void personnelManagement_Menu(vector<Person>& Borrowers, vector<Book>& Books)
 		switch (nPersonChoose)
 		{
 		case 1:
-			addPersonInfo(Borrowers);//(stu, szCourseName, npPersonNum);//转到增加人员信息函数
-			//OutputPersonInfo(stu, szCourseName, *npPersonNum, 0, 0, *npPersonNum);//输出给用户看一下
-			system("PAUSE");
+			Person::add_a_Borrower();
+;			system("PAUSE");
 			break;
 		case 2:
 			deletePersonInfo(Borrowers);//(stu, szCourseName, npPersonNum);//转到删除人员信息函数
@@ -98,6 +97,33 @@ void addPersonInfo(vector<Person>& Borrowers)
 	Borrowers.push_back(temp_person);
 
 }
+
+void addPersonInfo(int id, string name)
+{
+	extern vector<Person> Borrowers;
+	InitPersonStruct personList;
+	personList.ID=id;
+	personList.Name=name;
+	cout << "请输入年龄:";
+	cin >> personList.Age;
+	cout << "请输入电话:";
+	cin >> personList.PhoneNumber;
+	cout << "请输入性别(0为女，1为男):" << endl;
+	cin >> personList.Gender;
+	cout << "请输入组别(0)为学生，(1)为教师:" << endl;
+	cin >> personList.Type;
+	Person temp_person(personList);
+
+	cout << "请检查是否正确" << endl;
+	display_person_title();
+
+	temp_person.display();
+	
+	Borrowers.push_back(temp_person);
+	system("pause");
+}
+
+
 
 
 /// <summary>

@@ -55,8 +55,10 @@
     <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="Admin.txt" />
     <Text Include="Book.txt" />
     <Text Include="Person.txt" />
+    <Text Include="User.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

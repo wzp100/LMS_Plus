@@ -1,6 +1,7 @@
 
 #include "saveMenu.h"
 #include "FileProcess.h"
+#include "Admin.h"
 
 
 /// <summary>
@@ -65,6 +66,10 @@ void fileSave(vector<Person>& Borrowers, vector<Book>& Books)
 	cout << "读者信息已保存,保存在Person.txt" << endl;
 	book_file_save(Books);
 	cout << "图书信息已保存,保存在Book.txt" << endl;
+	User::save_file();
+	Admin::save_file();
+	cout << "账户信息已保存" << endl;
+
 }
 /// <summary>
 /// 6.2 文件排序函数
