@@ -115,7 +115,7 @@ public:
 	//测试移动数据函数
 	friend void mov_data_from_person_to_user();
 	//输出时间
-
+	friend void borrowBook();
 private:
 	int ID;//0编号
 	string Name;//1姓名

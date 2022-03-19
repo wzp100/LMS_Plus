@@ -164,7 +164,7 @@ void User_Main_Menu()
 		{
 			//转到二级菜单：借阅归还图书菜单选项显示
 		case 1:
-			borrowAndReturnBook_Menu(Borrowers, Books);
+			borrowAndReturnBook_Menu();
 			break;
 
 			//转到二级菜单：图书信息查询菜单选项显示

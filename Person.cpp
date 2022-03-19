@@ -101,7 +101,7 @@ void person_modify(Person & person)
 //"编号","姓名","年龄","性别","电话","数量限制" ,"已借书数目","已借的所有书ID","组别"
 void Person::modify()
 {
-	size_t i = 1;
+	size_t i = 0;
 	int SNumber = 0;
 
 	cout << "选择修改相应的序号" << endl;
@@ -335,6 +335,7 @@ void Person::display_all_books()
 				time_display(temp_book.BorrowTime);
 				cout << "  ";
 				time_display(temp_book.ReturnTime);
+				cout << endl;
 				
 			}
 		}
@@ -504,7 +505,7 @@ void Person::delete_a_Borrower()
 				
 
 
-				for (vector<User>::iterator ite = Users.begin(); ite != Users.end(); iter++)
+				for (vector<User>::iterator ite = Users.begin(); ite != Users.end(); ite++)
 				{
 					if ((*ite).search_ID(temp_ID))
 					{

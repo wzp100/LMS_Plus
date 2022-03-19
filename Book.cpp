@@ -555,6 +555,69 @@ bool Book::Borrow_Book(int id)
 	return false;
 }
 
+void Book::Return_a_Book()
+{
+	cout << "  当前为还书模块  " << endl;
+
+	int temp_ID;//暂存ID
+	int temp_BookID;
+	int temp_Number;//序号
+	bool searchStatus = false;
+	temp_ID = present_borrower->ID;
+
+	//得到当前的序号
+	temp_Number = searchPerson(Borrowers, temp_ID);
+	//如果没有借书直接结束
+	if (Borrowers[temp_Number].BooksID.size() == 0)
+	{
+		cout << "当前没有借书" << endl;
+		return;
+	}
+	if (temp_Number >= 0)
+	{
+		display_person_title();//显示表头
+		Borrowers[temp_Number].display();//显示信息
+		Borrowers[temp_Number].display_all_books(Books);
+		cout << "请检查信息是否正确" << endl;
+		cout << "请输入要还书的ID:";
+		cin >> temp_BookID;
+		//检查当前书的ID是否可以找到
+		for (Book& temp_book : Books)
+		{
+			if (temp_book.searchBookID(temp_BookID))
+			{
+				searchStatus = true;
+				Borrowers[temp_Number].return_book(temp_book);
+				//显示当前的信息
+				cout << "请检查以下信息是否正确" << endl;
+				display_book_title();
+				temp_book.display();
+				display_person_title();
+				Borrowers[temp_Number].display();
+				Borrowers[temp_Number].display_all_books(Books);
+				break;
+			}
+
+		}
+		//找到了书
+		if (searchStatus == true)
+		{
+
+		}
+		//没有找到
+		else
+		{
+			cout << "没有找到对应书ID，请重试" << endl;
+		}
+
+	}
+	//没有找到ID
+	else
+	{
+		cout << "没有找到对应ID，请重试" << endl;
+	}
+}
+
 
 
 /// <summary>

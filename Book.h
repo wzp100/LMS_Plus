@@ -92,7 +92,8 @@ public:
 	static Book* Search_Book_ID(int id);
 	//借书函数
 	static bool Borrow_Book(int id);
-	
+	//还书函数
+	static void Return_a_Book();
 
 protected:
 	int ID;//0编号

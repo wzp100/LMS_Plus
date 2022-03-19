@@ -41,8 +41,9 @@ void personnelManagement_Menu(vector<Person>& Borrowers, vector<Book>& Books)
 ;			system("PAUSE");
 			break;
 		case 2:
-			deletePersonInfo(Borrowers);//(stu, szCourseName, npPersonNum);//转到删除人员信息函数
+			//deletePersonInfo(Borrowers);//(stu, szCourseName, npPersonNum);//转到删除人员信息函数
 			//OutputPersonInfo(stu, szCourseName, *npPersonNum, 0, 0, *npPersonNum);//输出给用户看一下
+			Person::delete_a_Borrower();
 			system("PAUSE");
 			break;
 		case 3:
@@ -120,7 +121,6 @@ void addPersonInfo(int id, string name)
 	temp_person.display();
 	
 	Borrowers.push_back(temp_person);
-	system("pause");
 }
 
 
