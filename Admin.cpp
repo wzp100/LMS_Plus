@@ -22,7 +22,7 @@ bool Admin::login(int ID)
     // 如果是当前ID，就判断密码并返回true
     if (ID == this->ID)
     {
-        cout << "请输入密码：";
+        cout << "请输入密码："<<endl;
         temp_password = get_password('*');
         cout << endl;
         if (temp_password == this->Password)

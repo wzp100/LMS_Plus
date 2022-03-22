@@ -24,13 +24,29 @@ ostream& operator<<(ostream& ios, User user)
 string get_password(char rch)
 {
     string ret;
-    char ch;
-    ch = _getch();
+    char ch = ' ';
     while (ch != '\n' && ch != '\r')
     {
-        _putch(rch);
-        ret += ch;
         ch = _getch();
+        if (ch == 8)
+        {
+            
+            if (ret.size()>0)
+            {
+                cout << "\b" << " " << "\b";
+                ret.pop_back();
+               
+            }
+            continue;
+
+        }
+        if (ch != '\n' && ch != '\r')
+        {
+            _putch(rch);
+            ret += ch;
+            
+        }
+
     }
 
     return ret;
